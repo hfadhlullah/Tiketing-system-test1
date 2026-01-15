@@ -401,7 +401,7 @@ let themesettings = `
                     <div class="accordion-body pb-2 px-0 py-3 border-top">
                        <div class="d-flex align-items-center flex-wrap">
                             <div class="theme-colorsset me-2 mb-2">
-                                <input type="radio" name="color" id="primaryColor" value="primary" checked>
+                                <input type="radio" name="color" id="primaryColor" value="primary" >
                                 <label for="primaryColor" class="primary-clr"></label>
                             </div>
                             <div class="theme-colorsset me-2 mb-2">
@@ -409,7 +409,7 @@ let themesettings = `
                                 <label for="brightblueColor" class="theme-color-1"></label>
                             </div>
                             <div class="theme-colorsset me-2 mb-2">
-                                <input type="radio" name="color" id="lunargreenColor" value="lunargreen" >
+                                <input type="radio" name="color" id="lunargreenColor" value="lunargreen" checked>
                                 <label for="lunargreenColor" class="theme-color-2"></label>
                             </div>
                             <div class="theme-colorsset me-2 mb-2">
