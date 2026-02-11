@@ -1,9 +1,20 @@
+import { useEffect } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import Dashboard from './pages/Dashboard';
 import StrukturOrganisasi from './pages/StrukturOrganisasi';
 
 function App() {
+  useEffect(() => {
+    // Hide the loader once the specific component is mounted
+    const loader = document.getElementById('global-loader');
+    if (loader) {
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 500); // Simulate the delay from the original script
+    }
+  }, []);
+
   return (
     <HashRouter>
       <Routes>
