@@ -5,6 +5,17 @@ import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
 const DashboardLayout: React.FC = () => {
+    // Function to handle overlay click - closing the sidebar
+    const closeSidebar = () => {
+        const wrapper = document.querySelector('.main-wrapper');
+        const overlay = document.querySelector('.sidebar-overlay');
+        const html = document.querySelector('html');
+
+        wrapper?.classList.remove('slide-nav');
+        overlay?.classList.remove('opened');
+        html?.classList.remove('menu-opened');
+    };
+
     return (
         <div className="main-wrapper">
             <Header />
@@ -15,6 +26,7 @@ const DashboardLayout: React.FC = () => {
                 </div>
                 <Footer />
             </div>
+            <div className="sidebar-overlay" onClick={closeSidebar}></div>
         </div>
     );
 }

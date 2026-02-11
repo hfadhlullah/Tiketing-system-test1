@@ -6,7 +6,10 @@ const Sidebar: React.FC = () => {
     const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({
         'Main': true,
         'Pengajuan': true,
-        'DocumentControl': true
+        'DocumentControl': true,
+        'IT': false,
+        'GeneralAffair': false,
+        'DocControlNested': false
     });
 
     const toggleSubmenu = (key: string) => {
@@ -46,18 +49,18 @@ const Sidebar: React.FC = () => {
                             <h6 className="submenu-hdr" onClick={() => toggleSubmenu('Pengajuan')}>Pengajuan</h6>
                             <ul>
                                 <li className="submenu">
-                                    <a href="#" onClick={(e) => { e.preventDefault(); /* Add logic for nested submenu if needed */ }}>
+                                    <a href="#" className={openSubmenus['IT'] ? "subdrop" : ""} onClick={(e) => { e.preventDefault(); toggleSubmenu('IT'); }}>
                                         <i className="ti ti-calendar fs-16 me-2"></i><span>IT</span><span className="menu-arrow"></span>
                                     </a>
-                                    <ul>
+                                    <ul style={{ display: openSubmenus['IT'] ? 'block' : 'none' }}>
                                         <li><Link to="/work-order">Work Order IT</Link></li>
                                     </ul>
                                 </li>
                                 <li className="submenu">
-                                    <a href="#" onClick={(e) => { e.preventDefault(); }}>
+                                    <a href="#" className={openSubmenus['GeneralAffair'] ? "subdrop" : ""} onClick={(e) => { e.preventDefault(); toggleSubmenu('GeneralAffair'); }}>
                                         <i className="ti ti-calendar fs-16 me-2"></i><span>General Affair</span><span className="menu-arrow"></span>
                                     </a>
-                                    <ul>
+                                    <ul style={{ display: openSubmenus['GeneralAffair'] ? 'block' : 'none' }}>
                                         <li><a href="#">Peminjaman Kendaraan</a></li>
                                         <li><Link to="/booking-meeting-room">Booking Ruang Meeting</Link></li>
                                         <li><a href="#">Permintaan Barang</a></li>
@@ -70,10 +73,10 @@ const Sidebar: React.FC = () => {
                             <h6 className="submenu-hdr" onClick={() => toggleSubmenu('DocumentControl')}>Document Control</h6>
                             <ul>
                                 <li className="submenu">
-                                    <a href="#" onClick={(e) => { e.preventDefault(); }}>
+                                    <a href="#" className={openSubmenus['DocControlNested'] ? "subdrop" : ""} onClick={(e) => { e.preventDefault(); toggleSubmenu('DocControlNested'); }}>
                                         <i className="ti ti-user-cog fs-16 me-2"></i><span>Document Control</span><span className="menu-arrow"></span>
                                     </a>
-                                    <ul>
+                                    <ul style={{ display: openSubmenus['DocControlNested'] ? 'block' : 'none' }}>
                                         <li><Link to="/struktur-organisasi"><i className="ti ti-clipboard-text fs-16 me-2"></i><span>Struktur Organisasi</span></Link></li>
                                         <li><Link to="/kebijakan"><i className="ti ti-clipboard-text fs-16 me-2"></i><span>Kebijakan</span></Link></li>
                                         <li><Link to="/jobdesk"><i className="ti ti-clipboard-text fs-16 me-2"></i><span>Jobdesk</span></Link></li>

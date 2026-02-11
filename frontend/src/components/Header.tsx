@@ -19,7 +19,16 @@ const Header: React.FC = () => {
                 </div>
                 {/* /Logo */}
 
-                <a id="mobile_btn" className="mobile_btn" href="#sidebar">
+                <a id="mobile_btn" className="mobile_btn" href="#sidebar" onClick={(e) => {
+                    e.preventDefault();
+                    const wrapper = document.querySelector('.main-wrapper');
+                    const overlay = document.querySelector('.sidebar-overlay');
+                    const html = document.querySelector('html');
+
+                    wrapper?.classList.toggle('slide-nav');
+                    overlay?.classList.toggle('opened');
+                    html?.classList.add('menu-opened');
+                }}>
                     <span className="bar-icon">
                         <span></span>
                         <span></span>
