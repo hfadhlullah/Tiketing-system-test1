@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIOS Login Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 DIOS Login Test</h1>
+        
+        <div class="info">
+            <strong>Test Credentials:</strong><br>
+            Email: admin@dios.com<br>
+            Password: password123
+        </div>
+
+        <button onclick="testLogin()">🧪 Test Login API</button>
+        <button onclick="testCORS()">🌐 Test CORS</button>
+        <button onclick="checkBackend()">✅ Check Backend</button>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000/api';
+
+        async function testLogin() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = '⏳ Testing login...';
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'admin@dios.com',
+                        password: 'password123'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ Login Successful!</strong><br><br>
+                        <strong>User:</strong> ${data.data.user.name}<br>
+                        <strong>Email:</strong> ${data.data.user.email}<br>
+                        <strong>Token:</strong> ${data.data.token.substring(0, 20)}...<br><br>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    localStorage.setItem('token', data.data.token);
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ Login Failed</strong><br><br>
+                        ${data.message || 'Unknown error'}<br><br>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ Error</strong><br><br>
+                    ${error.message}<br><br>
+                    <strong>Possible Issues:</strong><br>
+                    • Backend server not running<br>
+                    • CORS not configured<br>
+                    • Network error<br><br>
+                    <pre>${error.stack}</pre>
+                `;
+            }
+        }
+
+        async function testCORS() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = '⏳ Testing CORS configuration...';
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': window.location.origin,
+                        'Access-Control-Request-Method': 'POST',
+                    }
+                });
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    <strong>✅ CORS Working!</strong><br><br>
+                    <strong>Status:</strong> ${response.status}<br>
+                    <strong>Allow Methods:</strong> ${response.headers.get('Access-Control-Allow-Methods')}<br>
+                    <strong>Allow Origin:</strong> ${response.headers.get('Access-Control-Allow-Origin')}<br>
+                `;
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ CORS Error</strong><br><br>
+                    ${error.message}<br><br>
+                    Check backend CORS configuration in:<br>
+                    <code>backend/config/cors.php</code>
+                `;
+            }
+        }
+
+        async function checkBackend() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = '⏳ Checking backend status...';
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'GET',
+                });
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    <strong>✅ Backend is Running!</strong><br><br>
+                    <strong>API URL:</strong> ${API_URL}<br>
+                    <strong>Status:</strong> ${response.status}<br>
+                    <strong>Response:</strong> Backend is accessible<br>
+                `;
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ Backend Not Accessible</strong><br><br>
+                    ${error.message}<br><br>
+                    <strong>Steps to fix:</strong><br>
+                    1. Open terminal<br>
+                    2. cd backend<br>
+                    3. php artisan serve<br>
+                `;
+            }
+        }
+
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            setTimeout(testLogin, 500);
+        });
+    </script>
+</body>
+</html>
