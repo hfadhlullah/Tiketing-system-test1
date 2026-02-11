@@ -6,7 +6,6 @@ const Sidebar: React.FC = () => {
     const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({
         'Main': true,
         'Pengajuan': true,
-        'DocumentControl': true,
         'IT': false,
         'GeneralAffair': false,
         'DocControlNested': false
@@ -69,8 +68,7 @@ const Sidebar: React.FC = () => {
                                 </li>
                             </ul>
                         </li>
-                        <li className={openSubmenus['DocumentControl'] ? "submenu-open" : ""}>
-                            <h6 className="submenu-hdr" onClick={() => toggleSubmenu('DocumentControl')}>Document Control</h6>
+                        <li className="submenu-open">
                             <ul>
                                 <li className="submenu">
                                     <a href="#" className={openSubmenus['DocControlNested'] ? "subdrop" : ""} onClick={(e) => { e.preventDefault(); toggleSubmenu('DocControlNested'); }}>
